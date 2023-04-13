@@ -12,10 +12,16 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    console.log("EEEEEE SIDE EFEKT TRIGEROVAN EEEEEEE");
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
+    const indentifier = setTimeout(() => {
+      console.log("CHECKING FORM VALIDITY");
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+    return () => {
+      console.log("CLEANUP CODE");
+      clearTimeout(indentifier);
+    };
   }, [enteredEmail, enteredPassword]); // => svaki put kad se promeni state enteredEmail i enteredPassword, izvrsice se sta god da je navedeno u useEffect callback funkciji
 
   const emailChangeHandler = (event) => {
