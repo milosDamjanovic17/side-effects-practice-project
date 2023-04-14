@@ -4,7 +4,7 @@ import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
 
-// useReducer function for email input
+// useReducer function for email input, uvek se prosledjuje state i action
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.includes("@") };
@@ -16,6 +16,7 @@ const emailReducer = (state, action) => {
   return { value: "", isValid: false };
 };
 
+// useReducer function for password input
 const passwordReducer = (state, action) => {
 
   if (action.type === "USER_INPUT") {
@@ -26,7 +27,6 @@ const passwordReducer = (state, action) => {
   }
 
   return { value: "", isValid: false };
-
 }
 
 const Login = (props) => {
@@ -43,6 +43,7 @@ const Login = (props) => {
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
     isValid: null,
+    // ekvivalent ovoga sa useState principom => value === enteredEmail(""); isValid === emailIsValid()
   });
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
@@ -50,41 +51,43 @@ const Login = (props) => {
     isValid: null,
   });
 
-  // just an example of how useEffect works
-  // useEffect(() => {
-  //   console.log("EFFECT RUNNING");
+  //example of how useEffect works
+    useEffect(() => {
+      console.log("EFFECT RUNNING");
 
-  //   return () => {
-  //     console.log("EFFECT CLEANUP");
-  //   };
-  // }, []);
+      return () => {
+        console.log("EFFECT CLEANUP");
+      };
+    }, []);
 
-  // useEffect(() => {
-  //   const indentifier = setTimeout(() => {
-  //     console.log("CHECKING FORM VALIDITY");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
-  //   return () => {
-  //     console.log("CLEANUP CODE");
-  //     clearTimeout(indentifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]); // => svaki put kad se promeni state enteredEmail i enteredPassword, izvrsice se sta god da je navedeno u useEffect callback funkciji
+    useEffect(() => {
+      const indentifier = setTimeout(() => {
+        console.log("CHECKING FORM VALIDITY");
+        setFormIsValid(
+          emailState.isValid && passwordState.isValid
+        );
+      }, 500);
+      return () => {
+        console.log("CLEANUP CODE");
+        clearTimeout(indentifier);
+      };
+    }, [emailState, passwordState]); // => svaki put kad se promeni state emailState i passwordState, izvrsice se sta god da je navedeno u useEffect callback funkciji
 
   //
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
 
-    setFormIsValid(
-      event.target.value.includes("@") && passwordState.isValid
-    );
+    // kad bi koristili samo useEffect
+    // setFormIsValid(
+    //   event.target.value.includes("@") && passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({type: 'USER_INPUT', val: event.target.value})
 
-    setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
+    // kad bi koristili samo useEffect
+    // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validateEmailHandler = () => {
@@ -142,3 +145,24 @@ const Login = (props) => {
 };
 
 export default Login;
+
+
+
+/**
+ * 
+ * useEffect() => koristimo kada updateujemo state gde uglavnom novi state ne zavisi toliko od prethodnog: u ovom slucaju to je const[formIsValid, setFormIsValid] = useState(false);
+ * 
+ * useReducer() => koristimo da bi merge-ovali dva ili vise state-a u jedan, i taj jedan state ce menjati callback funkcija: u ovom slucaju imamo 2 primera, uzecemo:
+ *      const [emailState, dispatchEmail] = useReducer(emailReducer, {
+            value: "",
+            isValid: null,
+        });
+
+        emailState => u ovaj const smo merge-ovali dva state-a enteredEmail & emailIsValid,
+        dispatchEmail => callback funkcija koja ce menjati state emailState,
+        emailReducer => funckija koja ce biti trigerovana SVAKI PUT kada se desi promena unutar dispatchEmail funkcije
+        
+        value: "",
+        isValid: null, => pocetni state emailState-a
+ * 
+ */
