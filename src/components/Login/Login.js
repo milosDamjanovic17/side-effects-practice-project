@@ -60,18 +60,21 @@ const Login = (props) => {
       };
     }, []);
 
+    const {isValid: emailIsValid} = emailState;
+    const {isValid: passwordIsValid} = passwordState;
+
     useEffect(() => {
       const indentifier = setTimeout(() => {
         console.log("CHECKING FORM VALIDITY");
         setFormIsValid(
-          emailState.isValid && passwordState.isValid
+          emailIsValid && passwordIsValid
         );
       }, 500);
       return () => {
         console.log("CLEANUP CODE");
         clearTimeout(indentifier);
       };
-    }, [emailState, passwordState]); // => svaki put kad se promeni state emailState i passwordState, izvrsice se sta god da je navedeno u useEffect callback funkciji
+    }, [emailIsValid, passwordIsValid]); // => (DEPRECATED, COMMENT KREIRAN DOK JE RADJENO SA: [emailState, passwordState] ) svaki put kad se promeni state emailState i passwordState, izvrsice se sta god da je navedeno u useEffect callback funkciji
 
   //
   const emailChangeHandler = (event) => {
