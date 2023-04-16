@@ -11,6 +11,7 @@ const Navigation = (props) => {
 
             <nav className={classes.nav}>
               <ul>
+                {/* if ctxValue.isLoggedIn state is true, <li> */}
                 {ctxValue.isLoggedIn && (
                   <li>
                     <a href="/">Users</a>
