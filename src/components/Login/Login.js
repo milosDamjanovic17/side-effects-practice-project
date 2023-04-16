@@ -3,7 +3,7 @@ import React, { useState, useEffect, useReducer, useContext } from "react";
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
-import AuthContext from "../../store/auth.context";
+import AuthContext from "../../store/auth-context";
 
 // useReducer function for email input, uvek se prosledjuje state i action
 const emailReducer = (state, action) => {
@@ -19,7 +19,6 @@ const emailReducer = (state, action) => {
 
 // useReducer function for password input
 const passwordReducer = (state, action) => {
-
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.trim().length > 6 };
   }
@@ -28,7 +27,7 @@ const passwordReducer = (state, action) => {
   }
 
   return { value: "", isValid: false };
-}
+};
 
 const Login = (props) => {
   // const [enteredEmail, setEnteredEmail] = useState("");
@@ -48,7 +47,7 @@ const Login = (props) => {
   });
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: '',
+    value: "",
     isValid: null,
   });
 
@@ -56,29 +55,27 @@ const Login = (props) => {
   const authCtx = useContext(AuthContext);
 
   //example of how useEffect works
-    useEffect(() => {
-      console.log("EFFECT RUNNING");
+  useEffect(() => {
+    console.log("EFFECT RUNNING");
 
-      return () => {
-        console.log("EFFECT CLEANUP");
-      };
-    }, []);
+    return () => {
+      console.log("EFFECT CLEANUP");
+    };
+  }, []);
 
-    const {isValid: emailIsValid} = emailState;
-    const {isValid: passwordIsValid} = passwordState;
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
-    useEffect(() => {
-      const indentifier = setTimeout(() => {
-        console.log("CHECKING FORM VALIDITY");
-        setFormIsValid(
-          emailIsValid && passwordIsValid
-        );
-      }, 500);
-      return () => {
-        console.log("CLEANUP CODE");
-        clearTimeout(indentifier);
-      };
-    }, [emailIsValid, passwordIsValid]); // => (DEPRECATED, COMMENT KREIRAN DOK JE RADJENO SA: [emailState, passwordState] ) svaki put kad se promeni state emailState i passwordState, izvrsice se sta god da je navedeno u useEffect callback funkciji
+  useEffect(() => {
+    const indentifier = setTimeout(() => {
+      console.log("CHECKING FORM VALIDITY");
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500);
+    return () => {
+      console.log("CLEANUP CODE");
+      clearTimeout(indentifier);
+    };
+  }, [emailIsValid, passwordIsValid]); // => (DEPRECATED, COMMENT KREIRAN DOK JE RADJENO SA: [emailState, passwordState] ) svaki put kad se promeni state emailState i passwordState, izvrsice se sta god da je navedeno u useEffect callback funkciji
 
   //
   const emailChangeHandler = (event) => {
@@ -91,7 +88,7 @@ const Login = (props) => {
   };
 
   const passwordChangeHandler = (event) => {
-    dispatchPassword({type: 'USER_INPUT', val: event.target.value})
+    dispatchPassword({ type: "USER_INPUT", val: event.target.value });
 
     // kad bi koristili samo useEffect
     // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
@@ -102,7 +99,7 @@ const Login = (props) => {
   };
 
   const validatePasswordHandler = () => {
-    dispatchPassword({type: 'INPUT_BLUR'});
+    dispatchPassword({ type: "INPUT_BLUR" });
   };
 
   const submitHandler = (event) => {
@@ -152,8 +149,6 @@ const Login = (props) => {
 };
 
 export default Login;
-
-
 
 /**
  * 
