@@ -154,6 +154,7 @@ export default Login;
 /**
  * 
  * useEffect() => koristimo kada updateujemo state gde uglavnom novi state ne zavisi toliko od prethodnog: u ovom slucaju to je const[formIsValid, setFormIsValid] = useState(false);
+ *              it's great for independent pieces of state/data, useEffect() is often main state management
  * 
  * useReducer() => koristimo da bi merge-ovali dva ili vise state-a u jedan, i taj jedan state ce menjati callback funkcija: u ovom slucaju imamo 2 primera, uzecemo:
  *      const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -166,6 +167,6 @@ export default Login;
         emailReducer => funckija koja ce biti trigerovana SVAKI PUT kada se desi promena unutar dispatchEmail funkcije
         
         value: "",
-        isValid: null, => pocetni state emailState-a
+        isValid: null, => pocetni state emailState-a     
  * 
  */
