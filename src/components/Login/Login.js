@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import AuthContext from "../../store/auth.context";
 
 // useReducer function for email input, uvek se prosledjuje state i action
 const emailReducer = (state, action) => {
@@ -50,6 +51,9 @@ const Login = (props) => {
     value: '',
     isValid: null,
   });
+
+  // authentication context where we handle authentication state
+  const authCtx = useContext(AuthContext);
 
   //example of how useEffect works
     useEffect(() => {
@@ -103,7 +107,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, passwordState.value);
+    authCtx.onLogin(emailState.value, passwordState.value);
   };
 
   return (
