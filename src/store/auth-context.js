@@ -19,17 +19,17 @@ export const AuthContextProvider = (props) => {
   }, []);
 
   const logoutHandler = () => {
-    // localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
 
   const loginHandler = () => {
-    // localStorage.setItem("isLoggedIn", "1");
+    localStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
   };
 
   return (
-    <AuthContextProvider
+    <AuthContext.Provider
       value={{
         isLoggedIn: isLoggedIn,
         onLogout: logoutHandler,
@@ -37,7 +37,7 @@ export const AuthContextProvider = (props) => {
       }}
     >
       {props.children} {/* isLoggedIn: isLoggedIn(component state) */}
-    </AuthContextProvider>
+    </AuthContext.Provider>
   );
 };
 
