@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useRef, useImperativeHandle } from "react";
 
 import styles from "./Input.module.css";
 
-const Input = (props) => {
+// ref property is bind to ref value inside <Input> JSX component in parent component, exposes ref={xxxx} value and makes it configurable separately
+const Input = React.forwardRef((props, ref) => {
+  const inputRef = useRef();
+
+  const activateFocus = () => {
+    inputRef.current.focus();
+  };
+
+  // this is just rare use case, usually don't use useImperativeHandle, try finding another solution with props for example
+  useImperativeHandle(ref, () => {
+    return {
+      activateFocus: activateFocus, // FIELDS POINTS TO ACTIVATE FOCUS FUNCTION ABOVE
+    };
+  });
+
   return (
     <div
       className={`${styles.control} ${
@@ -11,6 +25,7 @@ const Input = (props) => {
     >
       <label htmlFor={props.id}>{props.label}</label>
       <input
+        ref={inputRef}
         type={props.type}
         id={props.id}
         value={props.value}
@@ -19,6 +34,6 @@ const Input = (props) => {
       />
     </div>
   );
-};
+});
 
 export default Input;
